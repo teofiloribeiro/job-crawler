@@ -8,34 +8,30 @@ import java.util.Map;
 import com.teofilo.jobs_crawler.crawler.DetailCrawler;
 import com.teofilo.jobs_crawler.crawler.JobCrawler;
 import com.teofilo.jobs_crawler.entities.JobKey;
+import com.teofilo.jobs_crawler.util.Semaphore;
 
 public class Main {
 	
 	public static final List <String> jobLinks = new ArrayList<String>();
 	public static final Map<JobKey, Float> jobSalaryMap = new HashMap<JobKey, Float>();
-	public static int pagesToCrawler = 5;
+	public static int pagesToCrawler = 10;
+	private static int detailId = 0;
 
-	public static void main(String[] args) throws InterruptedException {	
-		System.out.println("Jobs Crawler was initialized!");
-		
-		
+	public static void main(String[] args) {	
+		Semaphore semaphore = new Semaphore();
+		System.out.println("Jobs Crawler was initialized!");	
 		
 		for (int i=0; i < pagesToCrawler; i++) {
-			JobCrawler crawler = new JobCrawler("https://www.vagas.com.br/vagas-de-?a%5B%5D=24&a%5B%5D=67&q=&pagina="+ i +"&_=1588188718216");
-			new Thread(crawler, "JobCrawler - Thread: " + i).start();			
+			JobCrawler crawler = new JobCrawler("https://www.vagas.com.br/vagas-de-tecnologia?&q=tecnologia&pagina=" + i + "&_=1591921673291");
+			new Thread(crawler, "JobCrawler - Thread: " + i).start();
 		}
-		System.out.println("FOR ENDED");
 		
 		while (pagesToCrawler>0 || !jobLinks.isEmpty()) {
 			System.out.println(".");
 			if(!jobLinks.isEmpty()) {
-				System.out.println("....");
-				DetailCrawler crawler = new DetailCrawler(jobLinks.remove(0));		
-				new Thread(crawler, "DetailCrawler").start();
+				DetailCrawler crawler = new DetailCrawler(jobLinks.remove(0), semaphore);		
+				new Thread(crawler, "DetailCrawler" + detailId++).start();
 			}
-		}
-		
-		
-		
+		}	
 	}
 }

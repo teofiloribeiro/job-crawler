@@ -19,16 +19,15 @@ public class JobCrawler implements Runnable{
 	
 	public void run () {
 		String page = new PageDownloader(url).downlad();
-		doc = Jsoup.parse(page);
-		Elements linkJobsDetail = doc.getElementsByClass("link-detalhes-vaga");
+		this.doc = Jsoup.parse(page);
+		Elements linkJobsDetail = this.doc.getElementsByClass("link-detalhes-vaga");
 		for(Element linkJobDetail : linkJobsDetail) {
 			String path = linkJobDetail.attr("href");
 			Main.jobLinks.add(this.baseUrl + path);
-			//System.out.println("Path: " + path);
+			System.out.println("Path: " + path);
 			
 		}
 		Main.pagesToCrawler--;
-		//System.out.println("Process ended");
 	}
 	
 	private String findBaseUrl(String url) {

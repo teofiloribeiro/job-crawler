@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.teofilo.jobs-crawler</groupId>
   <artifactId>jobs-crawler</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Jobs Crawler</name>
   <description>This crawler maps jobs</description>
   
@@ -14,4 +14,17 @@
 	    <version>1.13.1</version>
 	</dependency>
   </dependencies>
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.1</version>
+            <configuration>
+                <source>1.6</source>
+                <target>1.6</target>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
 </project>
